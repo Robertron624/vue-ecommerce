@@ -4,6 +4,8 @@ import TopHeader from './components/topHeader.vue'
 
 import productGrid from './components/productGrid.vue'
 
+import productDetail from './components/productDetail.vue'
+
 </script>
 
 <template>
@@ -11,6 +13,7 @@ import productGrid from './components/productGrid.vue'
 
   <div class="products">
     <productGrid />
+    <productDetail />
   </div>
   
 </template>

@@ -1,38 +1,8 @@
 <script>
 
-// Import the mock data
-
-import mockData from '../mockData.js';
-
-
-// create thee arrays for the three columns
-
-let firstColumn = [];
-let secondColumn = [];
-let thirdColumn = [];
-
-// loop through the mockData and push the data to the arrays
-
-for (let i = 0; i < mockData.length; i++) {
-    if (i % 3 === 0) {
-        firstColumn.push(mockData[i]);
-    } else if (i % 3 === 1) {
-        secondColumn.push(mockData[i]);
-    } else {
-        thirdColumn.push(mockData[i]);
-    }
-}
-
-
-
 export default {
     name: 'ProductGrid',
     data() {
-        return {
-            firstColumn: firstColumn,
-            secondColumn: secondColumn,
-            thirdColumn: thirdColumn,
-        }
     },
     methods: {
         // when the user clicks on a product, navigate to the product page
@@ -44,51 +14,70 @@ export default {
     computed: {
         // get the products from the store
         allProducts() {
-            return this.$store.state.allProducts;
+
+            const allProducts = this.$store.getters.getProductsAsThreeArrays;
+
+            // divide the products into three columns
+
+            let firstColumn = allProducts[0];
+            let secondColumn = allProducts[1];
+            let thirdColumn = allProducts[2];
+
+
+            return {
+                firstColumn: firstColumn,
+                secondColumn: secondColumn,
+                thirdColumn: thirdColumn,
+            }
         }
     }
 }
-
 </script>
 
 <template>
     <div class="container">
 
-    <h1>
-        Store
-    </h1>
+        <h1>
+            Store
+        </h1>
+
+        <!-- iterate over the three arrays in allProducts function -->
+
         <div class="product-grid">
             <!-- show the products in three columns  -->
 
             <div class="colum">
-                <div class="product" v-for="product in firstColumn" :key="product.id">
+                <div class="product" v-for="product in allProducts.firstColumn" :key="product.id">
                     <img :src="product.image" alt="product.name">
                 </div>
             </div>
 
             <div class="colum">
-                <div class="product" v-for="product in secondColumn" :key="product.id">
+                <div class="product" v-for="product in allProducts.secondColumn" :key="product.id">
                     <img :src="product.image" alt="product.name">
                 </div>
             </div>
 
             <div class="colum">
-                <div class="product" v-for="product in thirdColumn" :key="product.id">
+                <div class="product" v-for="product in allProducts.thirdColumn" :key="product.id">
                     <img :src="product.image" alt="product.name">
                 </div>
             </div>
+
         </div>
+
+
+
     </div>
 </template>
 
-<style lang="scss">
-
+<style scoped lang="scss">
 .container {
     max-width: 500px;
 
     h1 {
         font-size: 2rem;
-        border-bottom: 1px solid rgb(240	232	241	);
+        border-bottom: 1px solid rgb(240 232 241);
         color: rgb(213, 158, 221);
     }
 
@@ -96,7 +85,7 @@ export default {
         display: flex;
         flex-wrap: wrap;
         gap: 1rem;
-       
+
 
         .colum {
             display: flex;
@@ -107,7 +96,7 @@ export default {
 
         .product {
             height: fit-content;
-            border: 1px solid rgb(240	232	241	);
+            border: 1px solid rgb(240 232 241);
             padding: 1rem;
             display: flex;
             justify-content: center;
@@ -123,5 +112,4 @@ export default {
     }
 
 }
-
 </style>

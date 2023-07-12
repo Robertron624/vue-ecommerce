@@ -12,12 +12,45 @@ app.use(router)
 import products from './mockData.js'
 
 const store = createStore({
-  state() {
-    return {
+  state: {
       allProducts: products,
       cartItems: []
+  },
+
+  getters: {
+    getProducts: (state) => state.allProducts,
+    getCartItems: (state) => state.cartItems,
+
+    getCartTotal: (state) => {
+      if (state.cartItems.length > 0) {
+        return state.cartItems
+          .map((item) => item.price)
+          .reduce((prev, curr) => prev + curr)
+      } else {
+        return 0
+      }
+    },
+
+    getProductsAsThreeArrays: (state) => {
+      const products = state.allProducts
+
+      let firstArray = [];
+      let secondArray = [];
+      let thirdArray = [];
+
+      for (let i = 0; i < products.length; i++) {
+        if (i % 3 === 0) {
+          firstArray.push(products[i]);
+        } else if (i % 3 === 1) {
+          secondArray.push(products[i]);
+        } else {
+          thirdArray.push(products[i]);
+        }
+    }
+      return [firstArray, secondArray, thirdArray]
     }
   },
+
   mutations: {
     setProducts: (state, products) => (state.allProducts = products),
     setCartItem: (state, item) => state.cartItems.push(item),
