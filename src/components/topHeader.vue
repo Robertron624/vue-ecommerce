@@ -10,10 +10,11 @@
     <header>
         <a href="/" class="logo">
             <span class="sr-only">Shopability store</span>
-            <img src="@/assets/images/logo.png" alt="shop logo">
+            <img src="/images/logo.png" alt="shop logo">
         </a>
         <div class="minicart-container">
             <button>
+                <span class="sr-only">Minicart</span>
                 <svg fill="#fff" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" width="800px" height="800px" viewBox="0 0 902.86 902.86"
                     xml:space="preserve">
@@ -62,6 +63,11 @@ header {
             display: flex;
             align-items: center;
             gap: .5rem;
+            transition: background-color .3s ease-in-out;
+
+            &:hover {
+                background-color: rgb(213, 158, 221);
+            }
 
             svg {
                 width: 1.5rem;

@@ -2,10 +2,17 @@
 
 import TopHeader from './components/topHeader.vue'
 
+import productGrid from './components/productGrid.vue'
+
 </script>
 
 <template>
   <TopHeader />
+
+  <div class="products">
+    <productGrid />
+  </div>
+  
 </template>
 
 <style>
