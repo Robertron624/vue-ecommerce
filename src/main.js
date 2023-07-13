@@ -13,9 +13,9 @@ import products from './mockData.js'
 
 const store = createStore({
   state: {
-      allProducts: products,
-      cartItems: [],
-      productInPDP: null,
+    allProducts: products,
+    cartItems: [],
+    productInPDP: null
   },
 
   getters: {
@@ -24,9 +24,7 @@ const store = createStore({
 
     getCartTotal: (state) => {
       if (state.cartItems.length > 0) {
-        return state.cartItems
-          .map((item) => item.price)
-          .reduce((prev, curr) => prev + curr)
+        return state.cartItems.map((item) => item.price).reduce((prev, curr) => prev + curr)
       } else {
         return 0
       }
@@ -34,19 +32,19 @@ const store = createStore({
     getProductsAsThreeArrays: (state) => {
       const products = state.allProducts
 
-      let firstArray = [];
-      let secondArray = [];
-      let thirdArray = [];
+      let firstArray = []
+      let secondArray = []
+      let thirdArray = []
 
       for (let i = 0; i < products.length; i++) {
         if (i % 3 === 0) {
-          firstArray.push(products[i]);
+          firstArray.push(products[i])
         } else if (i % 3 === 1) {
-          secondArray.push(products[i]);
+          secondArray.push(products[i])
         } else {
-          thirdArray.push(products[i]);
+          thirdArray.push(products[i])
         }
-    }
+      }
       return [firstArray, secondArray, thirdArray]
     },
 
@@ -61,16 +59,16 @@ const store = createStore({
         state.cartItems.findIndex((el) => el.id === id),
         1
       ),
-    
-    setProductInPDP: (state, product) => (state.productInPDP = product)
+    addCartItem: (state, item) => state.cartItems.push(item),
 
+    setProductInPDP: (state, product) => (state.productInPDP = product)
   },
   actions: {
-    addItemToCart({ commit }, cartItem) {
-      commit('setCartItem', cartItem)
-    },
     async deleteCartItem({ commit }, id) {
       commit('removeCartItem', id)
+    },
+    async addCartItem({ commit }, item) {
+      commit('addCartItem', item)
     }
   }
 })

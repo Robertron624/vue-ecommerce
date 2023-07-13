@@ -12,13 +12,16 @@ export default {
         // pass the product to the currentProduct in the PDP
 
         showProductInPDP(product) {
-            console.log(product)
             this.$store.commit('setProductInPDP', product);
         }
     },
 
     computed: {
         // get the products from the store
+        getProductInPDP () {
+            return this.$store.getters.getProductInPDP;
+        },
+
         allProducts() {
 
             const allProducts = this.$store.getters.getProductsAsThreeArrays;
@@ -53,20 +56,29 @@ export default {
             <!-- show the products in three columns  -->
 
             <div class="colum">
-                <div class="product" v-on:click="showProductInPDP(product)" v-for="product in allProducts.firstColumn" :key="product.id">
-                    <img :src="product.image" alt="product.name">
+                <div class="product" v-on:click="showProductInPDP(product)"
+                    v-for="product in allProducts.firstColumn" :key="product.id">
+                    <div :class="{ selected: product == getProductInPDP }"  class="product-container">
+                        <img :src="product.image" alt="product.name">
+                    </div>
                 </div>
             </div>
 
             <div class="colum">
-                <div class="product" v-on:click="showProductInPDP(product)" v-for="product in allProducts.secondColumn" :key="product.id">
-                    <img :src="product.image" alt="product.name">
+                <div class="product" v-on:click="showProductInPDP(product)"
+                    v-for="product in allProducts.secondColumn" :key="product.id">
+                    <div :class="{ selected: product == getProductInPDP }" class="product-container">
+                        <img :src="product.image" alt="product.name">
+                    </div>
                 </div>
             </div>
 
             <div class="colum">
-                <div class="product" v-on:click="showProductInPDP(product)" v-for="product in allProducts.thirdColumn" :key="product.id">
-                    <img :src="product.image" alt="product.name">
+                <div class="product" v-on:click="showProductInPDP(product)"
+                    v-for="product in allProducts.thirdColumn" :key="product.id">
+                    <div :class="{ selected: product == getProductInPDP }"  class="product-container">
+                        <img :src="product.image" alt="product.name">
+                    </div>
                 </div>
             </div>
         </div>
@@ -87,6 +99,7 @@ export default {
         display: flex;
         flex-wrap: wrap;
         gap: 1rem;
+        margin-top: 2rem;
 
 
         .colum {
@@ -97,27 +110,34 @@ export default {
         }
 
         .product {
-            height: fit-content;
-            background-color: rgb(255 255 255);
-            border: 1px solid rgb(240 232 241);
-            padding: 1rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
+            .product-container {
+                height: fit-content;
+                background-color: rgb(255 255 255);
+                border: 1px solid rgb(240 232 241);
+                padding: 1rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                transition: all 0.3s ease-in-out;
+                position: relative;
 
-            &:hover {
-                scale: 1.1;
-            }
+                &.selected {
+                    border: 2px solid rgb(177	132	185	);
+                    box-shadow: 0 0 10px rgb(177	132	185	);
+                }
+    
+                &:hover {
+                    scale: 1.1;
+                }
 
-            img {
-                max-width: 100%;
-                width: 100px;
-                object-fit: cover;
+                img {
+                    max-width: 100%;
+                    width: 100px;
+                    object-fit: cover;
+                }
             }
         }
     }
 
-}
-</style>
+}</style>
