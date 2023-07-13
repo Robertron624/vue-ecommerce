@@ -18,7 +18,7 @@ export default {
 
     computed: {
         // get the products from the store
-        getProductInPDP () {
+        getProductInPDP() {
             return this.$store.getters.getProductInPDP;
         },
 
@@ -38,6 +38,29 @@ export default {
                 secondColumn: secondColumn,
                 thirdColumn: thirdColumn,
             }
+        },
+
+        getQuantityInCart(productId) {
+
+            const productInCart = this.$store.getters.getProductFromMiniCart(productId);
+
+            if (productInCart) {
+                return productInCart.quantity;
+            }
+
+            return null;
+        },
+
+        isProductInCart(productId) {
+
+            console.log(productId)
+            const productInCart = this.$store.getters.getProductFromMiniCart(productId);
+
+            if (productInCart) {
+                return true;
+            }
+
+            return false;
         }
     }
 }
@@ -56,17 +79,24 @@ export default {
             <!-- show the products in three columns  -->
 
             <div class="colum">
-                <div class="product" v-on:click="showProductInPDP(product)"
-                    v-for="product in allProducts.firstColumn" :key="product.id">
-                    <div :class="{ selected: product == getProductInPDP }"  class="product-container">
+                <div class="product" v-on:click="showProductInPDP(product)" v-for="product in allProducts.firstColumn"
+                    :key="product.id">
+                    <div :class="{ selected: product == getProductInPDP }" class="product-container">
+
+                        <!-- show the quantity in the cart if the product is in the cart -->
+
+                        <!-- <div v-if="isProductInCart(product.id)" class="quantity-in-cart">
+                            {{ getQuantityInCart(product.id) }}
+                        </div> -->
+
                         <img :src="product.image" alt="product.name">
                     </div>
                 </div>
             </div>
 
             <div class="colum">
-                <div class="product" v-on:click="showProductInPDP(product)"
-                    v-for="product in allProducts.secondColumn" :key="product.id">
+                <div class="product" v-on:click="showProductInPDP(product)" v-for="product in allProducts.secondColumn"
+                    :key="product.id">
                     <div :class="{ selected: product == getProductInPDP }" class="product-container">
                         <img :src="product.image" alt="product.name">
                     </div>
@@ -74,9 +104,9 @@ export default {
             </div>
 
             <div class="colum">
-                <div class="product" v-on:click="showProductInPDP(product)"
-                    v-for="product in allProducts.thirdColumn" :key="product.id">
-                    <div :class="{ selected: product == getProductInPDP }"  class="product-container">
+                <div class="product" v-on:click="showProductInPDP(product)" v-for="product in allProducts.thirdColumn"
+                    :key="product.id">
+                    <div :class="{ selected: product == getProductInPDP }" class="product-container">
                         <img :src="product.image" alt="product.name">
                     </div>
                 </div>
@@ -122,11 +152,25 @@ export default {
                 transition: all 0.3s ease-in-out;
                 position: relative;
 
-                &.selected {
-                    border: 2px solid rgb(177	132	185	);
-                    box-shadow: 0 0 10px rgb(177	132	185	);
+                .quantity-in-cart {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    background-color: rgb(167 28 189);
+                    color: white;
+                    border-radius: 50%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 30px;
+                    height: 30px;
                 }
-    
+
+                &.selected {
+                    border: 2px solid rgb(177 132 185);
+                    box-shadow: 0 0 10px rgb(177 132 185);
+                }
+
                 &:hover {
                     scale: 1.1;
                 }
@@ -140,4 +184,5 @@ export default {
         }
     }
 
-}</style>
+}
+</style>

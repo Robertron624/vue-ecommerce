@@ -7,22 +7,25 @@ export default {
         handleAddToCart() {
 
             //Check if the product is already in the cart
-            const productId = this.$store.getters.getProductInPDP.id;
+            const productId = this.getProductInPDP.id;
             const productInCart = this.$store.getters.getProductFromMiniCart(productId);
 
-            console.log(productInCart)
-
             if (productInCart) {
+
+                // Using the addQuantityByOne action, add the quantity by one
+
                 this.$store.commit('addQuantityByOne', productId);
+
+                
                 return;
             }
 
             // If the product is not in the cart, add it and set the quantity to 1
             const productToAdd = {
-                id: this.$store.getters.getProductInPDP.id,
-                name: this.$store.getters.getProductInPDP.name,
-                price: this.$store.getters.getProductInPDP.price,
-                image: this.$store.getters.getProductInPDP.image,
+                id: this.getProductInPDP.id,
+                name: this.getProductInPDP.name,
+                price: this.getProductInPDP.price,
+                image: this.getProductInPDP.image,
                 quantity: 1,
             }
 
@@ -30,19 +33,19 @@ export default {
         },
 
         handleRemoveFromCart() {
-        
-            const productInCart = this.$store.getters.getProductInCart(this.getProductInPDP.id);
+            const productId = this.getProductInPDP.id;
+            const productInCart = this.$store.getters.getProductFromMiniCart(productId);
 
             if (productInCart) {
                 
                 // Check if the quantity is 1, if so, remove the product from the cart
                 if (productInCart.quantity === 1) {
-                    this.$store.commit('removeFromCart', this.getProductInPDP.id);
+                    this.$store.commit('removeCartItem', productId);
                     return;
                 }
                 // If the quantity is more than 1, remove the quantity by one
 
-                this.$store.commit('removeQuantityByOne', this.getProductInPDP);
+                this.$store.commit('removeQuantityByOne', productId);
                 return;
             }
         },
@@ -51,6 +54,18 @@ export default {
     computed: {
         getProductInPDP() {
             return this.$store.getters.getProductInPDP;
+        },
+
+        getQuantityInCart() {
+
+            const productId = this.$store.getters.getProductInPDP.id;
+            const productInCart = this.$store.getters.getProductFromMiniCart(productId);
+
+            if (productInCart) {
+                return productInCart.quantity;
+            }
+
+            return null;
         }
     }
 }
@@ -73,7 +88,15 @@ export default {
 
         <div class="product-detail" v-if="getProductInPDP">
 
-            <img :src="getProductInPDP.image" alt="getProductInPDP.name">
+            <div class="image-container">
+
+                <div v-if="getQuantityInCart" class="quantity-in-cart">
+                    <span>
+                        {{ getQuantityInCart }}
+                    </span>
+                </div>
+                <img :src="getProductInPDP.image" alt="getProductInPDP.name">
+            </div>
 
             <div class="name-price-quantity">
 
@@ -135,10 +158,31 @@ export default {
         margin-top: 1rem;
         gap: 1rem;
 
-        img {
-            width: 100%;
-            max-width: 300px;
+        div.image-container {
+            position: relative;
+
+            .quantity-in-cart {
+                position: absolute;
+                top: 0;
+                left: 0;
+                background-color: rgb(167 28 189);
+                color: white;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 30px;
+                height: 30px;
+                font-weight: 700;
+                font-size: .85rem;
+            }
+
+            img {
+                width: 100%;
+                max-width: 300px;
+            }
         }
+
 
         .name-price-quantity {
             display: flex;
