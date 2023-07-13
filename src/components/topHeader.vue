@@ -1,6 +1,12 @@
 <script>
     export default {
         name: 'TopHeader',
+
+        computed: {
+            getCartTotal() {
+                return this.$store.getters.getCartTotal;
+            }
+        }
     }
 
 </script>
@@ -32,7 +38,7 @@
                         </g>
                     </g>
                 </svg>
-                $0
+                ${{ getCartTotal }}
             </button>
         </div>
     </header>
@@ -59,7 +65,6 @@ header {
             border: none;
             padding: 10px;
             border-radius: 5px;
-            width: 4rem;
             display: flex;
             align-items: center;
             gap: .5rem;
@@ -72,6 +77,7 @@ header {
             svg {
                 width: 1.5rem;
                 height: 1.5rem;
+                flex: none;
             }
         }
     }

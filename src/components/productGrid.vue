@@ -13,6 +13,28 @@ export default {
 
         showProductInPDP(product) {
             this.$store.commit('setProductInPDP', product);
+        },
+
+
+        getQuantityInCart(productId) {
+
+            const productInCart = this.$store.getters.getProductFromMiniCart(productId);
+
+            if (productInCart) {
+                return productInCart.quantity;
+            }
+
+            return null;
+        },
+
+        isProductInCart(productId) {
+            const productInCart = this.$store.getters.getProductFromMiniCart(productId);
+
+            if (productInCart) {
+                return true;
+            }
+
+            return false;
         }
     },
 
@@ -40,28 +62,6 @@ export default {
             }
         },
 
-        getQuantityInCart(productId) {
-
-            const productInCart = this.$store.getters.getProductFromMiniCart(productId);
-
-            if (productInCart) {
-                return productInCart.quantity;
-            }
-
-            return null;
-        },
-
-        isProductInCart(productId) {
-
-            console.log(productId)
-            const productInCart = this.$store.getters.getProductFromMiniCart(productId);
-
-            if (productInCart) {
-                return true;
-            }
-
-            return false;
-        }
     }
 }
 </script>
@@ -83,13 +83,15 @@ export default {
                     :key="product.id">
                     <div :class="{ selected: product == getProductInPDP }" class="product-container">
 
-                        <!-- show the quantity in the cart if the product is in the cart -->
+                        <div class="image-container">
+                            <!-- show the quantity in the cart if the product is in the cart -->
+                            <div v-if="isProductInCart(product.id)" class="quantity-in-cart">
+                                {{ getQuantityInCart(product.id) }}
+                            </div>
+    
+                            <img :src="product.image" alt="product.name">
+                        </div>
 
-                        <!-- <div v-if="isProductInCart(product.id)" class="quantity-in-cart">
-                            {{ getQuantityInCart(product.id) }}
-                        </div> -->
-
-                        <img :src="product.image" alt="product.name">
                     </div>
                 </div>
             </div>
@@ -98,7 +100,13 @@ export default {
                 <div class="product" v-on:click="showProductInPDP(product)" v-for="product in allProducts.secondColumn"
                     :key="product.id">
                     <div :class="{ selected: product == getProductInPDP }" class="product-container">
-                        <img :src="product.image" alt="product.name">
+                        <div class="image-container">
+                            <div v-if="isProductInCart(product.id)" class="quantity-in-cart">
+                                {{ getQuantityInCart(product.id) }}
+                            </div>
+                            <img :src="product.image" alt="product.name">
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -107,7 +115,14 @@ export default {
                 <div class="product" v-on:click="showProductInPDP(product)" v-for="product in allProducts.thirdColumn"
                     :key="product.id">
                     <div :class="{ selected: product == getProductInPDP }" class="product-container">
-                        <img :src="product.image" alt="product.name">
+
+                        <div class="image-container">
+                            <div v-if="isProductInCart(product.id)" class="quantity-in-cart">
+                                {{ getQuantityInCart(product.id) }}
+                            </div>
+                            <img :src="product.image" alt="product.name">
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -149,22 +164,32 @@ export default {
                 justify-content: center;
                 align-items: center;
                 cursor: pointer;
-                transition: all 0.3s ease-in-out;
+                transition: all 0.2s ease-in-out;
                 position: relative;
 
-                .quantity-in-cart {
-                    position: absolute;
-                    top: 0;
-                    right: 0;
-                    background-color: rgb(167 28 189);
-                    color: white;
-                    border-radius: 50%;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    width: 30px;
-                    height: 30px;
+                .image-container {
+                    position: relative;
+                    .quantity-in-cart {
+                        position: absolute;
+                        top: -15px;
+                        left: -10px;
+                        background-color: rgb(167 28 189);
+                        color: white;
+                        border-radius: 50%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        width: 30px;
+                        height: 30px;
+                    }
+
+                    img {
+                    max-width: 100%;
+                    width: 100px;
+                    object-fit: cover;
                 }
+                }
+
 
                 &.selected {
                     border: 2px solid rgb(177 132 185);
@@ -175,11 +200,6 @@ export default {
                     scale: 1.1;
                 }
 
-                img {
-                    max-width: 100%;
-                    width: 100px;
-                    object-fit: cover;
-                }
             }
         }
     }
