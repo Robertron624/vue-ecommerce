@@ -3,11 +3,17 @@
 export default {
     name: 'ProductGrid',
     data() {
+        return {
+            productInPDP: null,
+        }
+
     },
     methods: {
-        // when the user clicks on a product, navigate to the product page
-        goToProduct(product) {
-            this.$router.push({ name: 'product', params: { id: product.id } });
+        // pass the product to the currentProduct in the PDP
+
+        showProductInPDP(product) {
+            console.log(product)
+            this.$store.commit('setProductInPDP', product);
         }
     },
 
@@ -47,27 +53,23 @@ export default {
             <!-- show the products in three columns  -->
 
             <div class="colum">
-                <div class="product" v-for="product in allProducts.firstColumn" :key="product.id">
+                <div class="product" v-on:click="showProductInPDP(product)" v-for="product in allProducts.firstColumn" :key="product.id">
                     <img :src="product.image" alt="product.name">
                 </div>
             </div>
 
             <div class="colum">
-                <div class="product" v-for="product in allProducts.secondColumn" :key="product.id">
+                <div class="product" v-on:click="showProductInPDP(product)" v-for="product in allProducts.secondColumn" :key="product.id">
                     <img :src="product.image" alt="product.name">
                 </div>
             </div>
 
             <div class="colum">
-                <div class="product" v-for="product in allProducts.thirdColumn" :key="product.id">
+                <div class="product" v-on:click="showProductInPDP(product)" v-for="product in allProducts.thirdColumn" :key="product.id">
                     <img :src="product.image" alt="product.name">
                 </div>
             </div>
-
         </div>
-
-
-
     </div>
 </template>
 
@@ -96,12 +98,18 @@ export default {
 
         .product {
             height: fit-content;
+            background-color: rgb(255 255 255);
             border: 1px solid rgb(240 232 241);
             padding: 1rem;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
+            transition: all 0.3s ease-in-out;
+
+            &:hover {
+                scale: 1.1;
+            }
 
             img {
                 max-width: 100%;

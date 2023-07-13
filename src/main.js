@@ -14,7 +14,8 @@ import products from './mockData.js'
 const store = createStore({
   state: {
       allProducts: products,
-      cartItems: []
+      cartItems: [],
+      productInPDP: null,
   },
 
   getters: {
@@ -30,7 +31,6 @@ const store = createStore({
         return 0
       }
     },
-
     getProductsAsThreeArrays: (state) => {
       const products = state.allProducts
 
@@ -48,7 +48,9 @@ const store = createStore({
         }
     }
       return [firstArray, secondArray, thirdArray]
-    }
+    },
+
+    getProductInPDP: (state) => state.productInPDP
   },
 
   mutations: {
@@ -58,7 +60,10 @@ const store = createStore({
       state.cartItems.splice(
         state.cartItems.findIndex((el) => el.id === id),
         1
-      )
+      ),
+    
+    setProductInPDP: (state, product) => (state.productInPDP = product)
+
   },
   actions: {
     addItemToCart({ commit }, cartItem) {

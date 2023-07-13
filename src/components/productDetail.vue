@@ -3,14 +3,18 @@
     export default {
         name: 'ProducDetail',
         data() {
-            
+            return {
+                productInPDP: this.$store.getters.getProductInPDP,
+            }
         },
         methods: {
             
         },
 
         computed: {
-            
+            getProductInPDP() {
+                return this.$store.getters.getProductInPDP;
+            }
         }
     }
 
@@ -22,6 +26,17 @@
         <h2>
             Please choose a product on the left
         </h2>
+
+        <div class="product-detail" v-if="getProductInPDP">
+            <h1>
+                {{getProductInPDP.name}}
+            </h1>
+            <img :src="getProductInPDP.image" alt="getProductInPDP.name">
+            <p>
+                {{getProductInPDP.description}}
+            </p>
+        </div>
+
     </div>
 
 
