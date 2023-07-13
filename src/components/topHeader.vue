@@ -5,6 +5,14 @@
         computed: {
             getCartTotal() {
                 return this.$store.getters.getCartTotal;
+            },
+            getIsMiniCartOpen() {
+                return this.$store.getters.getIsMiniCartOpen;
+            }
+        },
+        methods : {
+            toggleMiniCart() {
+                this.$store.commit('toggleMiniCart');
             }
         }
     }
@@ -19,7 +27,7 @@
             <img src="/images/logo.png" alt="shop logo">
         </a>
         <div class="minicart-container">
-            <button>
+            <button v-on:click="toggleMiniCart">
                 <span class="sr-only">Minicart</span>
                 <svg fill="#fff" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" width="800px" height="800px" viewBox="0 0 902.86 902.86"

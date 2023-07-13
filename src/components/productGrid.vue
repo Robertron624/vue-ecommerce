@@ -12,6 +12,10 @@ export default {
         // pass the product to the currentProduct in the PDP
 
         showProductInPDP(product) {
+
+            // Close minicart if it is open
+            this.$store.commit('closeMiniCart');
+
             this.$store.commit('setProductInPDP', product);
         },
 
@@ -61,7 +65,6 @@ export default {
                 thirdColumn: thirdColumn,
             }
         },
-
     }
 }
 </script>

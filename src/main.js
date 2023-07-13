@@ -15,7 +15,8 @@ const store = createStore({
   state: {
     allProducts: products,
     cartItems: [],
-    productInPDP: null
+    productInPDP: null,
+    isMinicartOpen: false
   },
 
   getters: {
@@ -54,7 +55,9 @@ const store = createStore({
       const product = state.cartItems.find((el) => el.id === id)
       return product.quantity
     },
-    getProductInPDP: (state) => state.productInPDP
+    getProductInPDP: (state) => state.productInPDP,
+
+    getIsMiniCartOpen: (state) => state.isMinicartOpen
   },
 
   mutations: {
@@ -79,7 +82,9 @@ const store = createStore({
     removeQuantityByOne: (state, id) => {
       const product = state.cartItems.find((el) => el.id === id)
       product.quantity--
-    }
+    },
+    toggleMiniCart: (state) => (state.isMinicartOpen = !state.isMinicartOpen), // for opening and closing mini cart in the header icon
+    closeMiniCart: (state) => (state.isMinicartOpen = false) // for closing mini cart when selecting a product from product grid
   },
   actions: {
 
@@ -90,6 +95,17 @@ const store = createStore({
     async removeQuantityByOne({ commit }, id) {
       commit('removeProductQuantityByOne', id)
     },
+
+    async toggleMiniCart({ commit, state }) {
+
+      if (state.isMinicartOpen) {
+        commit('toggleMiniCart')
+        document.body.style.overflow = 'unset'
+      } else {
+        commit('toggleMiniCart')
+        document.body.style.overflow = 'hidden'
+      }
+    },      
   }
 })
 

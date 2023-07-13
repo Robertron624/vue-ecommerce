@@ -10,7 +10,6 @@ import productDetail from './components/productDetail.vue'
 
 <template>
   <TopHeader />
-
   <div class="products">
     <productGrid />
     <productDetail />
@@ -52,7 +51,7 @@ import productDetail from './components/productDetail.vue'
     flex-wrap: wrap;
     justify-content: center;
     margin: 0 auto;
-    max-width: 1200px;
+    column-gap: 2rem;
   }
 
 </style>

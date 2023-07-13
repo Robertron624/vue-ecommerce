@@ -1,7 +1,14 @@
 <script>
 
+import minicartPage from './minicartPage.vue'
+
 export default {
     name: 'ProducDetail',
+
+    components: {
+        minicartPage
+    },
+
     methods: {
 
         handleAddToCart() {
@@ -66,6 +73,10 @@ export default {
             }
 
             return null;
+        },
+
+        getIsMiniCartOpen() {
+            return this.$store.getters.getIsMiniCartOpen;
         }
     }
 }
@@ -75,67 +86,71 @@ export default {
 <template>
     <div class="container">
 
-        <h2 class="pdp-title" v-if="getProductInPDP">
-            Product
-        </h2>
-
-        <div class="placeholder" v-if="!getProductInPDP">
-
-            <span></span>
-
-            <p>Please choose a product on the left</p>
+        <div class="pdp-title">
+            <span v-if="getProductInPDP && !getIsMiniCartOpen">Product</span>
+            <span v-if="getIsMiniCartOpen">Shoping Cart</span>
         </div>
+        <div class="product-detail" v-if="!getIsMiniCartOpen">
 
-        <div class="product-detail" v-if="getProductInPDP">
-
-            <div class="image-container">
-
-                <div v-if="getQuantityInCart" class="quantity-in-cart">
-                    <span>
-                        {{ getQuantityInCart }}
-                    </span>
-                </div>
-                <img :src="getProductInPDP.image" alt="getProductInPDP.name">
+            <div class="placeholder" v-if="!getProductInPDP">
+                <p>Please choose a product on the left</p>
             </div>
 
-            <div class="name-price-quantity">
-
-                <div class="name-price">
-                    <p class="name">
-                        {{ getProductInPDP.name }}
-                    </p>
-                    <span class="divisor">
-
-                    </span>
-                    <p class="price">
-                        ${{ getProductInPDP.price }}
-                    </p>
+            <div class="product" v-if="getProductInPDP">
+                <div class="image-container">
+    
+                    <div v-if="getQuantityInCart" class="quantity-in-cart">
+                        <span>
+                            {{ getQuantityInCart }}
+                        </span>
+                    </div>
+                    <img :src="getProductInPDP.image" alt="getProductInPDP.name">
                 </div>
-
-                <div class="quantity">
-                    <button v-on:click="handleRemoveFromCart" class="minus">
-                        -
-                    </button>
-                    <button v-on:click="handleAddToCart" class="plus">
-                        +
-                    </button>
+    
+                <div class="name-price-quantity">
+    
+                    <div class="name-price">
+                        <p class="name">
+                            {{ getProductInPDP.name }}
+                        </p>
+                        <span class="divisor">
+    
+                        </span>
+                        <p class="price">
+                            ${{ getProductInPDP.price }}
+                        </p>
+                    </div>
+    
+                    <div class="quantity">
+                        <button v-on:click="handleRemoveFromCart" class="minus">
+                            -
+                        </button>
+                        <button v-on:click="handleAddToCart" class="plus">
+                            +
+                        </button>
+                    </div>
                 </div>
+                <p class="description">
+                    {{ getProductInPDP.description }}
+                </p>
             </div>
-            <p class="description">
-                {{ getProductInPDP.description }}
-            </p>
         </div>
+
+        <div class="minicart-container" v-if="getIsMiniCartOpen">
+            <minicartPage />
+        </div>
+
     </div>
 </template>
 
 
 <style scoped lang="scss">
 .container {
-
-    h2.pdp-title {
+    div.pdp-title {
         font-size: 2rem;
         border-bottom: 1px solid rgb(240 232 241);
         color: rgb(213, 158, 221);
+        height: 52px;
     }
 
     .placeholder {
