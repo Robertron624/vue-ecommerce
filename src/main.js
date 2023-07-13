@@ -47,7 +47,9 @@ const store = createStore({
       }
       return [firstArray, secondArray, thirdArray]
     },
-
+    getProductFromMiniCart: (state) => (id) => {
+      return state.cartItems.find((el) => el.id === id)
+    },
     getProductInPDP: (state) => state.productInPDP
   },
 
@@ -61,7 +63,16 @@ const store = createStore({
       ),
     addCartItem: (state, item) => state.cartItems.push(item),
 
-    setProductInPDP: (state, product) => (state.productInPDP = product)
+    setProductInPDP: (state, product) => (state.productInPDP = product),
+
+    addProductQuantityByOne: (state, id) => {
+      const product = state.allProducts.find((el) => el.id === id)
+      product.quantity++
+    },
+    removeProductQuantityByOne: (state, id) => {
+      const product = state.allProducts.find((el) => el.id === id)
+      product.quantity--
+    }
   },
   actions: {
     async deleteCartItem({ commit }, id) {
@@ -69,7 +80,15 @@ const store = createStore({
     },
     async addCartItem({ commit }, item) {
       commit('addCartItem', item)
-    }
+    },
+
+    addQuantityByOne({ commit }, id) {
+      commit('addProductQuantityByOne', id)
+    },
+
+    async removeQuantityByOne({ commit }, id) {
+      commit('removeProductQuantityByOne', id)
+    },
   }
 })
 

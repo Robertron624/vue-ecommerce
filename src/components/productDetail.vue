@@ -4,6 +4,48 @@ export default {
     name: 'ProducDetail',
     methods: {
 
+        handleAddToCart() {
+
+            //Check if the product is already in the cart
+            const productId = this.$store.getters.getProductInPDP.id;
+            const productInCart = this.$store.getters.getProductFromMiniCart(productId);
+
+            console.log(productInCart)
+
+            if (productInCart) {
+                this.$store.commit('addQuantityByOne', productId);
+                return;
+            }
+
+            // If the product is not in the cart, add it and set the quantity to 1
+            const productToAdd = {
+                id: this.$store.getters.getProductInPDP.id,
+                name: this.$store.getters.getProductInPDP.name,
+                price: this.$store.getters.getProductInPDP.price,
+                image: this.$store.getters.getProductInPDP.image,
+                quantity: 1,
+            }
+
+            this.$store.commit('addCartItem', productToAdd);
+        },
+
+        handleRemoveFromCart() {
+        
+            const productInCart = this.$store.getters.getProductInCart(this.getProductInPDP.id);
+
+            if (productInCart) {
+                
+                // Check if the quantity is 1, if so, remove the product from the cart
+                if (productInCart.quantity === 1) {
+                    this.$store.commit('removeFromCart', this.getProductInPDP.id);
+                    return;
+                }
+                // If the quantity is more than 1, remove the quantity by one
+
+                this.$store.commit('removeQuantityByOne', this.getProductInPDP);
+                return;
+            }
+        },
     },
 
     computed: {
@@ -48,10 +90,10 @@ export default {
                 </div>
 
                 <div class="quantity">
-                    <button class="minus">
+                    <button v-on:click="handleRemoveFromCart" class="minus">
                         -
                     </button>
-                    <button class="plus">
+                    <button v-on:click="handleAddToCart" class="plus">
                         +
                     </button>
                 </div>
